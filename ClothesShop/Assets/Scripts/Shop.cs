@@ -19,7 +19,13 @@ public class Shop : MonoBehaviour
     [Button("OpenShop")]
     void Open()
     {
-        OpenShop();
+        ToggleShop(true);
+    }
+
+        [Button("CloseShop")]
+    void Close()
+    {
+        ToggleShop(false);
     }
     void Start()
     {
@@ -58,9 +64,13 @@ public class Shop : MonoBehaviour
 
     }
 
-    public void OpenShop()
+    public void ToggleShop(bool value)
     {
-        shopUI.ToggleShopUI(true);
-        shopUI.SetClothesButton(shopClothes, this);
+        shopUI.ToggleShopUI(value);
+
+        if (value)
+        {
+            shopUI.SetClothesButton(shopClothes, this);
+        }
     }
 }

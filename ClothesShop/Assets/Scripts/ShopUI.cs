@@ -11,9 +11,10 @@ public class ShopUI : MonoBehaviour
     const float dateTime = 1;
     public Transform clothesButtonContainer;
     public GameObject clothesButtonPrefab;
-    public ObjectPool<GameObject> clothesButtonPool;
+    private ObjectPool<GameObject> clothesButtonPool;
+    public List<ClothesButton> clothesButtonList;
     public CanvasGroup canvasGroup;
-    const int clothesButtonPoolMinSize = 10;
+    const int clothesButtonPoolMinSize = 0;
     const int clothesButtonPoolMaxSize = 100;
     const float fadeTime = 1;
     public static ShopUI instance;
@@ -39,13 +40,12 @@ public class ShopUI : MonoBehaviour
             clothes.gameObject.SetActive(false);
         }, clothes =>
         {
-            Destroy(clothes.gameObject);
+            clothes.gameObject.SetActive(false);
         }, false, clothesButtonPoolMinSize, clothesButtonPoolMaxSize);
 
-        for(int i = 0; i < clothesButtonPoolMinSize; i++)
+        for(int i = 0; i < clothesButtonPoolMaxSize; i++)
         {
-            GameObject clothesButton = clothesButtonPool.Get();
-            clothesButton.transform.SetParent(clothesButtonContainer, false);
+            PoolButton();
         }
 
         canvasGroup.alpha = 0;
@@ -54,24 +54,18 @@ public class ShopUI : MonoBehaviour
 
     public void SetClothesButton(List<Clothes> clothes, Shop shop)
     {
-        ClothesButton button = null;
-        for(int i = 0; i < clothesButtonPool.CountAll; i++)
+        for (int i = 0; i < clothesButtonList.Count; i++)
         {
-            GameObject go = clothesButtonPool.Get();
             if (i < clothes.Count)
             {
-                button = go.GetComponent<ClothesButton>();
-                if(button != null)
-                {
-                    Debug.Log("clothesCountIs: " +clothes.Count);
-                    Debug.Log("iIs: " + i);
-                    button.SetClothesButton(clothes[i], shop);
-                }
+                ClothesButton clothesButton = clothesButtonList[i];
+                clothesButton.SetClothesButton(clothes[i], shop);
+                clothesButton.gameObject.SetActive(true);
             }
-            /*else
+            else
             {
-                clothesButtonPool.Release(go);
-            }*/
+                clothesButtonPool.Release(clothesButtonList[i].gameObject);
+            }
         }
     }
 
@@ -88,6 +82,14 @@ public class ShopUI : MonoBehaviour
         {
             canvasGroup.DOFade(0, fadeTime);
         }
+    }
+
+    private void PoolButton()
+    {
+        GameObject go = clothesButtonPool.Get();
+        go.transform.SetParent(clothesButtonContainer, false);
+        ClothesButton button = go.GetComponent<ClothesButton>();
+        clothesButtonList.Add(button);
     }
 
 
