@@ -1,33 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Shop : MonoBehaviour
 {
     public List<Clothes> shopClothes;
     public Clothes selectedClothes;
     private PlayerInventory playerInventory;
+
+    [Button("Buy")]
+    void Buy()
+    {
+        BuyClothes();
+    }
     void Start()
     {
         playerInventory = PlayerInventory.instance;
     }
 
-    public void SelectClothes()
+    public void SelectClothes(Clothes clothes)
     {
-
+        selectedClothes = clothes;
     }
 
-    public void BuyClothes(Clothes clothes)
+    public void BuyClothes()
     {
-        if(playerInventory.wallet - clothes.price < 0)
+        if (selectedClothes != null)
         {
-            //can't buy clothes
-        }
-        else
-        {
-            playerInventory.ModifyWalletBalance(clothes.price, PlayerInventory.walletBallanceModifier.remove);
-            playerInventory.AddClothes(clothes);
-            shopClothes.Remove(clothes);
+            if (playerInventory.wallet - selectedClothes.price < 0)
+            {
+                //can't buy clothes
+            }
+            else
+            {
+                playerInventory.ModifyWalletBalance(selectedClothes.price, PlayerInventory.walletBallanceModifier.remove);
+                playerInventory.AddClothes(selectedClothes);
+                shopClothes.Remove(selectedClothes);
+                SelectClothes(null);
+            }
         }
     }
 
@@ -36,5 +47,6 @@ public class Shop : MonoBehaviour
         playerInventory.ModifyWalletBalance(clothes.price, PlayerInventory.walletBallanceModifier.add);
         playerInventory.RemoveClothes(clothes);
         shopClothes.Add(clothes);
+
     }
 }

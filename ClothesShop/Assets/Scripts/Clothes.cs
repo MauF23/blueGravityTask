@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clothes : MonoBehaviour
+[System.Serializable]
+public class Clothes
 {
+    public string name;
     public int price;
     public Sprite icon;
 }
