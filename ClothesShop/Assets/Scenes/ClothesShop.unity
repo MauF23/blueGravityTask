@@ -237,19 +237,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopClothes:
-  - name: clothes_1
-    price: 10
-    icon: {fileID: 0}
-  - name: clothes_2
-    price: 15
-    icon: {fileID: 0}
-  - name: clothes_3
-    price: 20
-    icon: {fileID: 0}
-  selectedClothes:
-    name: 
-    price: 0
-    icon: {fileID: 0}
+  - {fileID: 11400000, guid: ee84ba5496a78774a9b4f374f162bb07, type: 2}
+  - {fileID: 11400000, guid: d4744a19d9adb87479e0d2c6cca47d2a, type: 2}
+  - {fileID: 11400000, guid: ff9c792659087f7428c5dedd63faad2e, type: 2}
+  selectedClothes: {fileID: 11400000, guid: ee84ba5496a78774a9b4f374f162bb07, type: 2}
 --- !u!4 &740325677
 Transform:
   m_ObjectHideFlags: 0
