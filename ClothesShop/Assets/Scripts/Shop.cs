@@ -64,13 +64,18 @@ public class Shop : MonoBehaviour
 
     }
 
+    public void InitializeStore()
+    {
+        shopUI.SetClothesButton(shopClothes, this);
+    }
+
     public void ToggleShop(bool value)
     {
         shopUI.ToggleShopUI(value);
 
         if (value)
         {
-            shopUI.SetClothesButton(shopClothes, this);
+            InitializeStore();
         }
     }
 }

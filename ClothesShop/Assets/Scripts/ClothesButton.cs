@@ -11,7 +11,12 @@ public class ClothesButton : MonoBehaviour
     public Image buttonIcon;
     public Button button;
     private Shop shop;
-    
+    private ShopUI shopUI;
+
+    void Start()
+    {
+        shopUI = ShopUI.instance;
+    }
     public void SetClothesButton(Clothes clothes, Shop shop)
     {
         this.clothes = clothes;
@@ -24,6 +29,8 @@ public class ClothesButton : MonoBehaviour
 
     private void AddButtonListeners()
     {
+        //button.onClick.RemoveAllListeners();
         button.onClick.AddListener(delegate { shop.SelectClothes(clothes); });
+        button.onClick.AddListener(delegate { shopUI.ToggleConfirmationPanel(true); });
     }
 }

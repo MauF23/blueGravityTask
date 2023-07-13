@@ -11,12 +11,13 @@ public class ShopUI : MonoBehaviour
     const float dateTime = 1;
     public Transform clothesButtonContainer;
     public GameObject clothesButtonPrefab;
+    public CanvasGroup canvasGroupShop, canvasGroupConfirmation;
+    public Button confirmBuyButton;
     private ObjectPool<GameObject> clothesButtonPool;
     public List<ClothesButton> clothesButtonList;
-    public CanvasGroup canvasGroup;
     const int clothesButtonPoolMinSize = 0;
     const int clothesButtonPoolMaxSize = 100;
-    const float fadeTime = 1;
+    const float fadeTime = 0.25f;
     public static ShopUI instance;
 
     void Awake()
@@ -48,8 +49,10 @@ public class ShopUI : MonoBehaviour
             PoolButton();
         }
 
-        canvasGroup.alpha = 0;
+        canvasGroupShop.alpha = 0;
+        canvasGroupConfirmation.alpha = 0;
         ToggleShopUI(false);
+        ToggleConfirmationPanel(false);
     }
 
     public void SetClothesButton(List<Clothes> clothes, Shop shop)
@@ -67,20 +70,41 @@ public class ShopUI : MonoBehaviour
                 clothesButtonPool.Release(clothesButtonList[i].gameObject);
             }
         }
+
+        confirmBuyButton.onClick.RemoveAllListeners();
+        confirmBuyButton.onClick.AddListener(delegate { shop.BuyClothes(); });
+        confirmBuyButton.onClick.AddListener(delegate { shop.InitializeStore(); });
+        confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false); });
     }
+
 
     public void ToggleShopUI(bool value)
     {
-        canvasGroup.blocksRaycasts = value;
-        canvasGroup.interactable = value;
+        canvasGroupShop.blocksRaycasts = value;
+        canvasGroupShop.interactable = value;
 
         if (value)
         {
-            canvasGroup.DOFade(1, fadeTime);
+            canvasGroupShop.DOFade(1, fadeTime);
         }
         else
         {
-            canvasGroup.DOFade(0, fadeTime);
+            canvasGroupShop.DOFade(0, fadeTime);
+        }
+    }
+
+    public void ToggleConfirmationPanel(bool value)
+    {
+        canvasGroupConfirmation.blocksRaycasts = value;
+        canvasGroupConfirmation.interactable = value;
+
+        if (value)
+        {
+            canvasGroupConfirmation.DOFade(1, fadeTime);
+        }
+        else
+        {
+            canvasGroupConfirmation.DOFade(0, fadeTime);
         }
     }
 
