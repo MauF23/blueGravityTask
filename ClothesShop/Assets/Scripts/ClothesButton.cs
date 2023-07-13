@@ -5,16 +5,25 @@ using UnityEngine.UI;
 using TMPro;
 public class ClothesButton : MonoBehaviour
 {
-    public Clothes clothes;
+    private Clothes clothes;
+    private new string name;
     public TextMeshProUGUI priceText;
     public Image buttonIcon;
-    public new string name;
+    public Button button;
+    private Shop shop;
     
-    public void SetClothesButton(Clothes clothes)
+    public void SetClothesButton(Clothes clothes, Shop shop)
     {
         this.clothes = clothes;
         priceText.text = clothes.price.ToString();
         buttonIcon.sprite = clothes.icon;
         name = clothes.name;
+        this.shop = shop;
+        AddButtonListeners();
+    }
+
+    private void AddButtonListeners()
+    {
+        button.onClick.AddListener(delegate { shop.SelectClothes(clothes); });
     }
 }

@@ -8,15 +8,23 @@ public class Shop : MonoBehaviour
     public List<Clothes> shopClothes;
     public Clothes selectedClothes;
     private PlayerInventory playerInventory;
+    private ShopUI shopUI;
 
     [Button("Buy")]
     void Buy()
     {
         BuyClothes();
     }
+
+    [Button("OpenShop")]
+    void Open()
+    {
+        OpenShop();
+    }
     void Start()
     {
         playerInventory = PlayerInventory.instance;
+        shopUI = ShopUI.instance;
     }
 
     public void SelectClothes(Clothes clothes)
@@ -48,5 +56,11 @@ public class Shop : MonoBehaviour
         playerInventory.RemoveClothes(clothes);
         shopClothes.Add(clothes);
 
+    }
+
+    public void OpenShop()
+    {
+        shopUI.ToggleShopUI(true);
+        shopUI.SetClothesButton(shopClothes, this);
     }
 }
