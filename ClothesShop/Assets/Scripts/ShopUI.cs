@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.Pool;
+using TMPro;
 
 public class ShopUI : MonoBehaviour
 {
@@ -12,12 +13,19 @@ public class ShopUI : MonoBehaviour
     public Transform clothesButtonContainer;
     public GameObject clothesButtonPrefab;
     public CanvasGroup canvasGroupShop, canvasGroupConfirmation;
-    public Button confirmBuyButton;
+    public Button confirmBuyButton, cancelButton;
+    public TextMeshProUGUI confirmationInstructions;
     private ObjectPool<GameObject> clothesButtonPool;
     public List<ClothesButton> clothesButtonList;
     public enum TransactionType { buy, sell}
+    private TransactionType currentTransactionType;
     const int clothesButtonPoolMinSize = 0;
     const int clothesButtonPoolMaxSize = 100;
+    const string buyInstructions = "What are you buying";
+    const string sellInstructions = "What are you selling";
+    const string confirmBuy = "Buy:";
+    const string confirmSell = "Sell;";
+    private string previousInstructions;
     const float fadeTime = 0.25f;
     public static ShopUI instance;
     private PlayerInventory playerInventory;
@@ -33,6 +41,7 @@ public class ShopUI : MonoBehaviour
     void Start()
     {
         playerInventory = PlayerInventory.instance;
+        cancelButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null); });
         clothesButtonPool = new ObjectPool<GameObject>(() =>
         {
             return Instantiate(clothesButtonPrefab);
@@ -55,7 +64,7 @@ public class ShopUI : MonoBehaviour
         canvasGroupShop.alpha = 0;
         canvasGroupConfirmation.alpha = 0;
         ToggleShopUI(false);
-        ToggleConfirmationPanel(false);
+        ToggleConfirmationPanel(false, null);
     }
 
     public void SetClothesButton(List<Clothes> clothes, Shop shop, TransactionType transactionType)
@@ -80,15 +89,18 @@ public class ShopUI : MonoBehaviour
             case TransactionType.buy:
                 confirmBuyButton.onClick.AddListener(delegate { shop.BuyClothes(); });
                 confirmBuyButton.onClick.AddListener(delegate { shop.InitializeStore(); });
+                SetTransactionInstructions(buyInstructions);
                 break;
 
             case TransactionType.sell:
                 confirmBuyButton.onClick.AddListener(delegate { shop.SellClothes(); });
                 confirmBuyButton.onClick.AddListener(delegate { playerInventory.InitializeStore(); });
+                SetTransactionInstructions(sellInstructions);
                 break;
         }
-    
-        confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false); });
+
+        currentTransactionType = transactionType;
+        confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null); });
     }
 
 
@@ -107,7 +119,7 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    public void ToggleConfirmationPanel(bool value)
+    public void ToggleConfirmationPanel(bool value, string itemName)
     {
         canvasGroupConfirmation.blocksRaycasts = value;
         canvasGroupConfirmation.interactable = value;
@@ -115,11 +127,37 @@ public class ShopUI : MonoBehaviour
         if (value)
         {
             canvasGroupConfirmation.DOFade(1, fadeTime);
+            switch (currentTransactionType)
+            {
+                case TransactionType.buy:
+                    SetTransactionInstructions(buyInstructions);
+                    break;
+
+                case TransactionType.sell:
+                    SetTransactionInstructions(sellInstructions);
+                    break;
+            }
         }
         else
         {
             canvasGroupConfirmation.DOFade(0, fadeTime);
+
+            switch (currentTransactionType)
+            {
+                case TransactionType.buy:
+                    SetTransactionInstructions($"{confirmBuy} <color=red>{itemName}</color>?");
+                    break;
+
+                case TransactionType.sell:
+                    SetTransactionInstructions($"{confirmSell} <color=red>{itemName}</color>?");
+                    break;
+            }
         }
+    }
+
+    private void SetTransactionInstructions(string instructions)
+    {
+        confirmationInstructions.text = instructions;
     }
 
     private void PoolButton()
