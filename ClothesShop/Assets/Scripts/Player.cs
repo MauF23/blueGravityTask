@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         originalScale = transform.localScale;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (canMove)
         {
