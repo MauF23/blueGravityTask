@@ -13,23 +13,6 @@ public class Shop : MonoBehaviour
     private PlayerInventory playerInventory;
     private ShopUI shopUI;
 
-    [Button("Buy")]
-    void Buy()
-    {
-        BuyClothes();
-    }
-
-    [Button("OpenShop")]
-    void Open()
-    {
-        ToggleShop(true);
-    }
-
-    [Button("CloseShop")]
-    void Close()
-    {
-        ToggleShop(false);
-    }
     void Start()
     {
         playerInventory = PlayerInventory.instance;
@@ -76,13 +59,9 @@ public class Shop : MonoBehaviour
         shopUI.SetClothesButton(shopClothes, this, ShopUI.TransactionType.buy);
     }
 
-    public void ToggleShop(bool value)
+    public void OpenShop()
     {
-        shopUI.ToggleShopUI(value);
-
-        if (value)
-        {
-            InitializeStore();
-        }
+        shopUI.ToggleShopUI(true);
+        InitializeStore();
     }
 }

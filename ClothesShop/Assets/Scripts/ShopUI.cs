@@ -9,7 +9,6 @@ using TMPro;
 
 public class ShopUI : MonoBehaviour
 {
-    const float dateTime = 1;
     public Transform clothesButtonContainer;
     public GameObject clothesButtonPrefab;
     public CanvasGroup canvasGroupShop, canvasGroupConfirmation;
@@ -29,6 +28,7 @@ public class ShopUI : MonoBehaviour
     const float fadeTime = 0.25f;
     public static ShopUI instance;
     private PlayerInventory playerInventory;
+    private ShopDialog shopDialog;
 
     void Awake()
     {
@@ -41,7 +41,11 @@ public class ShopUI : MonoBehaviour
     void Start()
     {
         playerInventory = PlayerInventory.instance;
-        cancelButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null); });
+        shopDialog = ShopDialog.instance;
+
+        cancelButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null);});
+        closeShopButton.onClick.AddListener(delegate { ToggleShopUI(false); shopDialog.ToggleDialog(true); });
+
         clothesButtonPool = new ObjectPool<GameObject>(() =>
         {
             return Instantiate(clothesButtonPrefab);
@@ -87,21 +91,18 @@ public class ShopUI : MonoBehaviour
         switch (transactionType)
         {
             case TransactionType.buy:
-                confirmBuyButton.onClick.AddListener(delegate { shop.BuyClothes(); });
-                confirmBuyButton.onClick.AddListener(delegate { shop.InitializeStore(); });
+                confirmBuyButton.onClick.AddListener(delegate { shop.BuyClothes(); shop.InitializeStore(); });
                 SetTransactionInstructions(buyInstructions);
                 break;
 
             case TransactionType.sell:
-                confirmBuyButton.onClick.AddListener(delegate { shop.SellClothes(); });
-                confirmBuyButton.onClick.AddListener(delegate { playerInventory.InitializeStore(); });
+                confirmBuyButton.onClick.AddListener(delegate { shop.SellClothes(); playerInventory.InitializeStore(); });
                 SetTransactionInstructions(sellInstructions);
                 break;
         }
 
         currentTransactionType = transactionType;
-        confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null); });
-        confirmBuyButton.onClick.AddListener(delegate { UpdateBalanceText(); });
+        confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null); UpdateBalanceText(); });
     }
 
 

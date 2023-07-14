@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class ShopTrigger : MonoBehaviour
 {
-
+    public string greeting;
     private Player player;
     private Shop shop;
     private PlayerInventory playerInventory;
-    private bool openFlag;
+    private ShopDialog shopDialog;
     void Start()
     {
         playerInventory = PlayerInventory.instance;
-    }
-
-    void Update()
-    {
-        if(player != null && player.Interact() && !openFlag)
-        {
-            shop.ToggleShop(true);
-            openFlag = true;
-        }
+        shopDialog = ShopDialog.instance;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -28,15 +20,20 @@ public class ShopTrigger : MonoBehaviour
         player = col.GetComponent<Player>();
         if(player != null)
         {
-            playerInventory.SetCurrentShop(shop);
+            shopDialog.SetDialog(greeting, shop);
         }
     }
 
     void OnTriggerExit2D(Collider2D col)
     {
-        player = null;
+        ResetTrigger();
     }
 
+    public void ResetTrigger()
+    {
+        player = null;
+        shopDialog.ToggleDialog(false);
+    }
     public void SetShop(Shop shop)
     {
         this.shop = shop;

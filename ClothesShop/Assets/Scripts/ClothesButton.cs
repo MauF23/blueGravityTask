@@ -30,7 +30,6 @@ public class ClothesButton : MonoBehaviour
     private void AddButtonListeners()
     {
         button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(delegate { shop.SelectClothes(clothes); });
-        button.onClick.AddListener(delegate { shopUI.ToggleConfirmationPanel(true, name); });
+        button.onClick.AddListener(delegate { shop.SelectClothes(clothes); shopUI.ToggleConfirmationPanel(true, name); });
     }
 }

@@ -14,17 +14,6 @@ public class PlayerInventory : MonoBehaviour
     private ShopUI shopUI;
     public static PlayerInventory instance;
 
-    [Button("OpenShop")]
-    void Open()
-    {
-        ToggleShop(true);
-    }
-
-    [Button("Close")]
-    void Close()
-    {
-        ToggleShop(false);
-    }
     void Awake()
     {
         if(instance == null)
@@ -37,13 +26,6 @@ public class PlayerInventory : MonoBehaviour
     {
         shopUI = ShopUI.instance;
     }
-    /*public void SellClothes(Clothes clothes)
-    {
-        if(currentShop != null)
-        {
-            currentShop.SellClothes(clothes);
-        }
-    }*/
 
     public void AddClothes(Clothes clothes)
     {
@@ -88,14 +70,10 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void ToggleShop(bool value)
+    public void OpenShop()
     {
-        shopUI.ToggleShopUI(value);
-
-        if (value)
-        {
-            InitializeStore();
-        }
+        shopUI.ToggleShopUI(true);
+        InitializeStore();
     }
 
     public void SetCurrentShop(Shop shop)
