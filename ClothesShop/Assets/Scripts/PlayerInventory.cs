@@ -12,6 +12,7 @@ public class PlayerInventory : MonoBehaviour
     public Transform playerInventoryContainer;
     private ObjectPool<GameObject> clothesButtonPool;
     public List<Clothes> playerClothes;
+    private Clothes equippedClothes;
     public List<ClothesInventoryButton> clothesInventoryButtonList;
     public GameObject clothesInventoryButtonPrefab;
     public SpriteRenderer pelvis, torso, hood;
@@ -60,6 +61,8 @@ public class PlayerInventory : MonoBehaviour
         {
             PoolButton();
         }
+
+        EquipStartingClothes();
     }
 
     void Update()
@@ -143,9 +146,21 @@ public class PlayerInventory : MonoBehaviour
 
     public void ChangeClothes(Clothes clothes)
     {
+        if (equippedClothes != null)
+        {
+            playerClothes.Add(equippedClothes);
+        }
+
         pelvis.sprite = clothes.pelvis;
         torso.sprite = clothes.torso;
         hood.sprite = clothes.hood;
+
+        if (playerClothes.Contains(clothes))
+        {
+            playerClothes.Remove(clothes);
+        }
+
+        equippedClothes = clothes;
     }
 
     private void PoolButton()
@@ -170,6 +185,14 @@ public class PlayerInventory : MonoBehaviour
             {
                 clothesButtonPool.Release(clothesInventoryButtonList[i].gameObject);
             }
+        }
+    }
+
+    private void EquipStartingClothes()
+    {
+        if(playerClothes.Count > 0)
+        {
+            ChangeClothes(playerClothes[0]);
         }
     }
 }

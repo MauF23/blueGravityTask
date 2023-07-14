@@ -9,4 +9,5 @@ public class Clothes:ScriptableObject
     public int price;
     public Sprite icon;
     public Sprite pelvis, torso, hood;
+    private bool equiped;
 }
