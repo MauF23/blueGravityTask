@@ -8,6 +8,8 @@ public class PlayerInventory : MonoBehaviour
     public int wallet;
     public List<Clothes> playerClothes;
     public enum walletBallanceModifier {add, remove}
+
+    [ReadOnly]
     public Shop currentShop;
     private ShopUI shopUI;
     public static PlayerInventory instance;

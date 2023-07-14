@@ -6,7 +6,10 @@ using Sirenix.OdinInspector;
 public class Shop : MonoBehaviour
 {
     public List<Clothes> shopClothes;
+
+    [ReadOnly]
     public Clothes selectedClothes;
+    public ShopTrigger shopTrigger;
     private PlayerInventory playerInventory;
     private ShopUI shopUI;
 
@@ -31,6 +34,7 @@ public class Shop : MonoBehaviour
     {
         playerInventory = PlayerInventory.instance;
         shopUI = ShopUI.instance;
+        shopTrigger.SetShop(this);
     }
 
     public void SelectClothes(Clothes clothes)
