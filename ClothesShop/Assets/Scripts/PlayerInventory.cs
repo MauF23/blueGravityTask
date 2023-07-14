@@ -62,6 +62,7 @@ public class PlayerInventory : MonoBehaviour
             PoolButton();
         }
 
+        SetClothesButton();
         EquipStartingClothes();
     }
 
@@ -112,7 +113,15 @@ public class PlayerInventory : MonoBehaviour
     {
         if (currentShop != null)
         {
-            shopUI.SetClothesButton(playerClothes, currentShop, ShopUI.TransactionType.sell);
+            List<Clothes> sellableClothes = new List<Clothes>();
+            for(int i = 0; i < playerClothes.Count; i++)
+            {
+                sellableClothes.Add(playerClothes[i]);
+            }
+
+            sellableClothes.Remove(equippedClothes);
+
+            shopUI.SetClothesButton(sellableClothes, currentShop, ShopUI.TransactionType.sell);
         }
     }
 
@@ -146,19 +155,9 @@ public class PlayerInventory : MonoBehaviour
 
     public void ChangeClothes(Clothes clothes)
     {
-        if (equippedClothes != null)
-        {
-            playerClothes.Add(equippedClothes);
-        }
-
         pelvis.sprite = clothes.pelvis;
         torso.sprite = clothes.torso;
         hood.sprite = clothes.hood;
-
-        if (playerClothes.Contains(clothes))
-        {
-            playerClothes.Remove(clothes);
-        }
 
         equippedClothes = clothes;
     }
