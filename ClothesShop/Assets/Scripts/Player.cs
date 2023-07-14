@@ -7,8 +7,11 @@ public class Player : MonoBehaviour
 {
     public float speed;
     public Rigidbody2D rigidbody2D;
+    public Animator animator;
     private Vector2 movement;
+    [ReadOnly]
     public bool canMove;
+    private Vector3 originalScale;
     public static Player instance;
 
     [FoldoutGroup("Controls")]
@@ -24,6 +27,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         ToggleMovement(true);
+        originalScale = transform.localScale;
     }
 
     void LateUpdate()
@@ -36,9 +40,30 @@ public class Player : MonoBehaviour
 
     private void Movement()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        rigidbody2D.MovePosition(rigidbody2D.position + movement * speed * Time.deltaTime);
+        movement.x = Input.GetAxisRaw("Horizontal") * speed;
+        movement.y = Input.GetAxisRaw("Vertical") * speed;
+        rigidbody2D.velocity = new Vector2(movement.x, movement.y);
+        animator.SetFloat("speed", rigidbody2D.velocity.sqrMagnitude);
+        if(movement.x < 0)
+        {
+            Flip(true);
+        }
+        else if(movement.x > 0)
+        {
+            Flip(false);
+        }
+    }
+
+    private void Flip(bool value)
+    {
+        if (value)
+        {
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
+        }
+        else
+        {
+            transform.localScale = originalScale;
+        }
     }
 
     public bool Inventory()
