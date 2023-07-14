@@ -9,11 +9,19 @@ public class PlayerInventory : MonoBehaviour
     public List<Clothes> playerClothes;
     public enum walletBallanceModifier {add, remove}
     public Shop currentShop;
+    private ShopUI shopUI;
     public static PlayerInventory instance;
-    [Button("Sell")]
-    void Sell(Clothes clothes)
+
+    [Button("OpenShop")]
+    void Open()
     {
-        SellClothes(clothes);
+        ToggleShop(true);
+    }
+
+    [Button("Close")]
+    void Close()
+    {
+        ToggleShop(false);
     }
     void Awake()
     {
@@ -23,13 +31,17 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void SellClothes(Clothes clothes)
+    void Start()
+    {
+        shopUI = ShopUI.instance;
+    }
+    /*public void SellClothes(Clothes clothes)
     {
         if(currentShop != null)
         {
             currentShop.SellClothes(clothes);
         }
-    }
+    }*/
 
     public void AddClothes(Clothes clothes)
     {
@@ -39,7 +51,6 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-
     public void RemoveClothes(Clothes clothes)
     {
         if (playerClothes.Contains(clothes))
@@ -47,7 +58,6 @@ public class PlayerInventory : MonoBehaviour
             playerClothes.Remove(clothes);
         }
     }
-
 
     public void ModifyWalletBalance(int value, walletBallanceModifier modifier)
     {
@@ -67,6 +77,25 @@ public class PlayerInventory : MonoBehaviour
             wallet = 0;
         }
     }
+
+    public void InitializeStore()
+    {
+        if (currentShop != null)
+        {
+            shopUI.SetClothesButton(playerClothes, currentShop, ShopUI.TransactionType.sell);
+        }
+    }
+
+    public void ToggleShop(bool value)
+    {
+        shopUI.ToggleShopUI(value);
+
+        if (value)
+        {
+            InitializeStore();
+        }
+    }
+
     public void SetCurrentShop(Shop shop)
     {
         currentShop = shop;

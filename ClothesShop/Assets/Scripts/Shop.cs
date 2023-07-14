@@ -22,7 +22,7 @@ public class Shop : MonoBehaviour
         ToggleShop(true);
     }
 
-        [Button("CloseShop")]
+    [Button("CloseShop")]
     void Close()
     {
         ToggleShop(false);
@@ -56,17 +56,20 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public void SellClothes(Clothes clothes)
+    public void SellClothes()
     {
-        playerInventory.ModifyWalletBalance(clothes.price, PlayerInventory.walletBallanceModifier.add);
-        playerInventory.RemoveClothes(clothes);
-        shopClothes.Add(clothes);
+        if (selectedClothes != null)
+        {
+            playerInventory.ModifyWalletBalance(selectedClothes.price, PlayerInventory.walletBallanceModifier.add);
+            playerInventory.RemoveClothes(selectedClothes);
+            shopClothes.Add(selectedClothes);
+        }
 
     }
 
     public void InitializeStore()
     {
-        shopUI.SetClothesButton(shopClothes, this);
+        shopUI.SetClothesButton(shopClothes, this, ShopUI.TransactionType.buy);
     }
 
     public void ToggleShop(bool value)

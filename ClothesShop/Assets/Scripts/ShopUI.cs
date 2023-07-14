@@ -15,10 +15,12 @@ public class ShopUI : MonoBehaviour
     public Button confirmBuyButton;
     private ObjectPool<GameObject> clothesButtonPool;
     public List<ClothesButton> clothesButtonList;
+    public enum TransactionType { buy, sell}
     const int clothesButtonPoolMinSize = 0;
     const int clothesButtonPoolMaxSize = 100;
     const float fadeTime = 0.25f;
     public static ShopUI instance;
+    private PlayerInventory playerInventory;
 
     void Awake()
     {
@@ -30,6 +32,7 @@ public class ShopUI : MonoBehaviour
 
     void Start()
     {
+        playerInventory = PlayerInventory.instance;
         clothesButtonPool = new ObjectPool<GameObject>(() =>
         {
             return Instantiate(clothesButtonPrefab);
@@ -55,7 +58,7 @@ public class ShopUI : MonoBehaviour
         ToggleConfirmationPanel(false);
     }
 
-    public void SetClothesButton(List<Clothes> clothes, Shop shop)
+    public void SetClothesButton(List<Clothes> clothes, Shop shop, TransactionType transactionType)
     {
         for (int i = 0; i < clothesButtonList.Count; i++)
         {
@@ -72,8 +75,19 @@ public class ShopUI : MonoBehaviour
         }
 
         confirmBuyButton.onClick.RemoveAllListeners();
-        confirmBuyButton.onClick.AddListener(delegate { shop.BuyClothes(); });
-        confirmBuyButton.onClick.AddListener(delegate { shop.InitializeStore(); });
+        switch (transactionType)
+        {
+            case TransactionType.buy:
+                confirmBuyButton.onClick.AddListener(delegate { shop.BuyClothes(); });
+                confirmBuyButton.onClick.AddListener(delegate { shop.InitializeStore(); });
+                break;
+
+            case TransactionType.sell:
+                confirmBuyButton.onClick.AddListener(delegate { shop.SellClothes(); });
+                confirmBuyButton.onClick.AddListener(delegate { playerInventory.InitializeStore(); });
+                break;
+        }
+    
         confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false); });
     }
 
