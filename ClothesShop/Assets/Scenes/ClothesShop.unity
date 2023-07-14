@@ -570,7 +570,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: 352095379
   m_SortingOrder: 8
   m_TargetDisplay: 0
 --- !u!225 &140987175
@@ -4901,17 +4901,6 @@ MonoBehaviour:
   animator: {fileID: 1149505673}
   canMove: 0
   inventoryKey: 101
---- !u!210 &1149505668
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1149505666}
-  m_Enabled: 1
-  m_SortingLayerID: 352095379
-  m_SortingLayer: 2
-  m_SortingOrder: 2
 --- !u!4 &1149505669 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010141028922, guid: 722924ec8a0056f4a8fb443b2fb65ff9, type: 3}
@@ -9794,6 +9783,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   greeting: Greetings traveler, want to see my wares?
+--- !u!1 &1602590546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000013617770644, guid: 722924ec8a0056f4a8fb443b2fb65ff9, type: 3}
+  m_PrefabInstance: {fileID: 1149505665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!210 &1602590548
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602590546}
+  m_Enabled: 1
+  m_SortingLayerID: 352095379
+  m_SortingLayer: 2
+  m_SortingOrder: 2
 --- !u!1 &1623553333
 GameObject:
   m_ObjectHideFlags: 0
