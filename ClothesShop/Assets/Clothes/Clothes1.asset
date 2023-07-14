@@ -15,3 +15,6 @@ MonoBehaviour:
   name: Clothes1
   price: 10
   icon: {fileID: 21300000, guid: 215dd6c48c732d744aecd29e7fecbbfa, type: 3}
+  pelvis: {fileID: 21300000, guid: c376d5b80d02ffe4ba89fd03d60ec471, type: 3}
+  torso: {fileID: 21300000, guid: 215dd6c48c732d744aecd29e7fecbbfa, type: 3}
+  hood: {fileID: 21300000, guid: 468244f274f38f64b85773c7888444b6, type: 3}

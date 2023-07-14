@@ -28,6 +28,7 @@ public class ShopUI : MonoBehaviour
     const float fadeTime = 0.25f;
     public static ShopUI instance;
     private PlayerInventory playerInventory;
+    private Player player;
     private ShopDialog shopDialog;
 
     void Awake()
@@ -42,6 +43,7 @@ public class ShopUI : MonoBehaviour
     {
         playerInventory = PlayerInventory.instance;
         shopDialog = ShopDialog.instance;
+        player = Player.instance;
 
         cancelButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null);});
         closeShopButton.onClick.AddListener(delegate { ToggleShopUI(false); shopDialog.ToggleDialog(true); });
@@ -115,10 +117,14 @@ public class ShopUI : MonoBehaviour
         {
             UpdateBalanceText();
             canvasGroupShop.DOFade(1, fadeTime);
+            player.ToggleMovement(false);
+            playerInventory.ToggleInventoryCanvas(false);
+            
         }
         else
         {
             canvasGroupShop.DOFade(0, fadeTime);
+            player.ToggleMovement(true);
         }
     }
 

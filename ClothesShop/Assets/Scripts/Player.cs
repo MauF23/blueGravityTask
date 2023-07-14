@@ -8,17 +8,17 @@ public class Player : MonoBehaviour
     public float speed;
     public Rigidbody2D rigidbody2D;
     private Vector2 movement;
-    private bool canMove;
-    public static Player player;
+    public bool canMove;
+    public static Player instance;
 
     [FoldoutGroup("Controls")]
-    public KeyCode interactKey, escapeKey;
+    public KeyCode interactKey, inventoryKey;
 
     void Awake()
     {
-        if(player == null)
+        if(instance == null)
         {
-            player = this;
+            instance = this;
         }
     }
     void Start()
@@ -46,9 +46,9 @@ public class Player : MonoBehaviour
         return Input.GetKeyDown(interactKey);
     }
 
-    public bool Escape()
+    public bool Inventory()
     {
-        return Input.GetKeyDown(escapeKey);
+        return Input.GetKeyDown(inventoryKey);
     }
 
     public void ToggleMovement(bool value)

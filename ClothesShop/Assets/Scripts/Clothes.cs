@@ -8,4 +8,5 @@ public class Clothes:ScriptableObject
     public new string name;
     public int price;
     public Sprite icon;
+    public Sprite pelvis, torso, hood;
 }

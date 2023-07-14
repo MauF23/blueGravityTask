@@ -2,16 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using DG.Tweening;
+using UnityEngine.Pool;
 
 public class PlayerInventory : MonoBehaviour
 {
     public int wallet;
+    public CanvasGroup playerInventoryCanvas;
+    public Transform playerInventoryContainer;
+    private ObjectPool<GameObject> clothesButtonPool;
     public List<Clothes> playerClothes;
+    public List<ClothesInventoryButton> clothesInventoryButtonList;
+    public GameObject clothesInventoryButtonPrefab;
+    public SpriteRenderer pelvis, torso, hood;
     public enum walletBallanceModifier {add, remove}
 
     [ReadOnly]
     public Shop currentShop;
     private ShopUI shopUI;
+    private Player player;
+    const int clothesButtonPoolMinSize = 0;
+    const int clothesButtonPoolMaxSize = 100;
+    private bool inventoryUI;
+    const float fadeTime = 0.25f;
     public static PlayerInventory instance;
 
     void Awake()
@@ -25,6 +38,36 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
         shopUI = ShopUI.instance;
+        player = Player.instance;
+        playerInventoryCanvas.alpha = 0;
+        ToggleInventoryCanvas(false);
+
+        clothesButtonPool = new ObjectPool<GameObject>(() =>
+        {
+            return Instantiate(clothesInventoryButtonPrefab);
+        }, clothes =>
+        {
+            clothes.gameObject.SetActive(true);
+        }, clothes =>
+        {
+            clothes.gameObject.SetActive(false);
+        }, clothes =>
+        {
+            clothes.gameObject.SetActive(false);
+        }, false, clothesButtonPoolMinSize, clothesButtonPoolMaxSize);
+
+        for (int i = 0; i < clothesButtonPoolMaxSize; i++)
+        {
+            PoolButton();
+        }
+    }
+
+    void Update()
+    {
+        if (player.Inventory() && player.canMove)
+        {
+            ToggleInventoryCanvas(!inventoryUI);
+        }
     }
 
     public void AddClothes(Clothes clothes)
@@ -79,5 +122,54 @@ public class PlayerInventory : MonoBehaviour
     public void SetCurrentShop(Shop shop)
     {
         currentShop = shop;
+    }
+
+    public void ToggleInventoryCanvas(bool value)
+    {
+        inventoryUI = value;
+        playerInventoryCanvas.blocksRaycasts = value;
+        playerInventoryCanvas.interactable = value;
+
+        if (value)
+        {
+            playerInventoryCanvas.DOFade(1, fadeTime);
+            SetClothesButton();
+        }
+        else
+        {
+            playerInventoryCanvas.DOFade(0, fadeTime);
+        }
+    }
+
+    public void ChangeClothes(Clothes clothes)
+    {
+        pelvis.sprite = clothes.pelvis;
+        torso.sprite = clothes.torso;
+        hood.sprite = clothes.hood;
+    }
+
+    private void PoolButton()
+    {
+        GameObject go = clothesButtonPool.Get();
+        go.transform.SetParent(playerInventoryContainer, false);
+        ClothesInventoryButton button = go.GetComponent<ClothesInventoryButton>();
+        clothesInventoryButtonList.Add(button);
+    }
+
+    public void SetClothesButton()
+    {
+        for (int i = 0; i < clothesInventoryButtonList.Count; i++)
+        {
+            if (i < playerClothes.Count)
+            {
+                ClothesInventoryButton clothesButton = clothesInventoryButtonList[i];
+                clothesButton.SetButton(playerClothes[i]);
+                clothesButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                clothesButtonPool.Release(clothesInventoryButtonList[i].gameObject);
+            }
+        }
     }
 }

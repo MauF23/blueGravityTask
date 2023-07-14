@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9e4796e32ed55b4392aeed7c615e4ef, type: 3}
-  m_Name: Clothes2
+  m_Name: Clothes6
   m_EditorClassIdentifier: 
-  name: Clothes2
-  price: 20
-  icon: {fileID: 21300000, guid: 90458a12b047bb84ba77cb7ea81ba457, type: 3}
-  pelvis: {fileID: 21300000, guid: 27fe921d9d4bdb24eb91cc1e96a04f02, type: 3}
-  torso: {fileID: 21300000, guid: 90458a12b047bb84ba77cb7ea81ba457, type: 3}
-  hood: {fileID: 21300000, guid: f7e7bed775fff8347b9e53c67e20875f, type: 3}
+  name: Clothes6
+  price: 30
+  icon: {fileID: 21300000, guid: 250530d3e9754ed418009e3d539275b3, type: 3}
+  pelvis: {fileID: 21300000, guid: b1babcb6ce4ee78478abc5076a6d1b8d, type: 3}
+  torso: {fileID: 21300000, guid: 250530d3e9754ed418009e3d539275b3, type: 3}
+  hood: {fileID: 21300000, guid: 20eb058aea3c3a744bb5d47a1610550a, type: 3}
