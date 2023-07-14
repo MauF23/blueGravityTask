@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public static Player instance;
 
     [FoldoutGroup("Controls")]
-    public KeyCode interactKey, inventoryKey;
+    public KeyCode inventoryKey;
 
     void Awake()
     {
@@ -39,11 +39,6 @@ public class Player : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         rigidbody2D.MovePosition(rigidbody2D.position + movement * speed * Time.deltaTime);
-    }
-
-    public bool Interact()
-    {
-        return Input.GetKeyDown(interactKey);
     }
 
     public bool Inventory()
