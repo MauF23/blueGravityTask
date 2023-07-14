@@ -9777,6 +9777,7 @@ MonoBehaviour:
   canvasGroupConfirmation: {fileID: 528533639}
   confirmBuyButton: {fileID: 2128965519}
   cancelButton: {fileID: 1732987866}
+  closeShopButton: {fileID: 0}
   confirmationInstructions: {fileID: 1686802871}
   walletText: {fileID: 1488770914}
   clothesButtonList: []
@@ -9788,7 +9789,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1797302924}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

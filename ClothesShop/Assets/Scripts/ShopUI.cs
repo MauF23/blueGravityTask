@@ -13,7 +13,7 @@ public class ShopUI : MonoBehaviour
     public Transform clothesButtonContainer;
     public GameObject clothesButtonPrefab;
     public CanvasGroup canvasGroupShop, canvasGroupConfirmation;
-    public Button confirmBuyButton, cancelButton;
+    public Button confirmBuyButton, cancelButton, closeShopButton;
     public TextMeshProUGUI confirmationInstructions, walletText;
     private ObjectPool<GameObject> clothesButtonPool;
     public List<ClothesButton> clothesButtonList;
@@ -101,6 +101,7 @@ public class ShopUI : MonoBehaviour
 
         currentTransactionType = transactionType;
         confirmBuyButton.onClick.AddListener(delegate { ToggleConfirmationPanel(false, null); });
+        confirmBuyButton.onClick.AddListener(delegate { UpdateBalanceText(); });
     }
 
 
@@ -111,7 +112,7 @@ public class ShopUI : MonoBehaviour
 
         if (value)
         {
-            walletText.text = ($"{balanceText} {playerInventory.wallet.ToString()}");
+            UpdateBalanceText();
             canvasGroupShop.DOFade(1, fadeTime);
         }
         else
@@ -162,6 +163,10 @@ public class ShopUI : MonoBehaviour
         confirmationInstructions.text = instructions;
     }
 
+    private void UpdateBalanceText()
+    {
+        walletText.text = ($"{balanceText} {playerInventory.wallet.ToString()}");
+    }
     private void PoolButton()
     {
         GameObject go = clothesButtonPool.Get();
