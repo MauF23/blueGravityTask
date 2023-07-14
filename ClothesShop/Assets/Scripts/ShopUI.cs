@@ -14,18 +14,18 @@ public class ShopUI : MonoBehaviour
     public GameObject clothesButtonPrefab;
     public CanvasGroup canvasGroupShop, canvasGroupConfirmation;
     public Button confirmBuyButton, cancelButton;
-    public TextMeshProUGUI confirmationInstructions;
+    public TextMeshProUGUI confirmationInstructions, walletText;
     private ObjectPool<GameObject> clothesButtonPool;
     public List<ClothesButton> clothesButtonList;
     public enum TransactionType { buy, sell}
     private TransactionType currentTransactionType;
     const int clothesButtonPoolMinSize = 0;
     const int clothesButtonPoolMaxSize = 100;
-    const string buyInstructions = "What are you buying";
-    const string sellInstructions = "What are you selling";
+    const string buyInstructions = "What are you buying?";
+    const string sellInstructions = "What are you selling?";
     const string confirmBuy = "Buy:";
-    const string confirmSell = "Sell;";
-    private string previousInstructions;
+    const string confirmSell = "Sell:";
+    const string balanceText = "Balance:";
     const float fadeTime = 0.25f;
     public static ShopUI instance;
     private PlayerInventory playerInventory;
@@ -111,6 +111,7 @@ public class ShopUI : MonoBehaviour
 
         if (value)
         {
+            walletText.text = ($"{balanceText} {playerInventory.wallet.ToString()}");
             canvasGroupShop.DOFade(1, fadeTime);
         }
         else
@@ -130,21 +131,6 @@ public class ShopUI : MonoBehaviour
             switch (currentTransactionType)
             {
                 case TransactionType.buy:
-                    SetTransactionInstructions(buyInstructions);
-                    break;
-
-                case TransactionType.sell:
-                    SetTransactionInstructions(sellInstructions);
-                    break;
-            }
-        }
-        else
-        {
-            canvasGroupConfirmation.DOFade(0, fadeTime);
-
-            switch (currentTransactionType)
-            {
-                case TransactionType.buy:
                     SetTransactionInstructions($"{confirmBuy} <color=red>{itemName}</color>?");
                     break;
 
@@ -152,6 +138,22 @@ public class ShopUI : MonoBehaviour
                     SetTransactionInstructions($"{confirmSell} <color=red>{itemName}</color>?");
                     break;
             }
+
+        }
+        else
+        {
+            canvasGroupConfirmation.DOFade(0, fadeTime);
+            switch (currentTransactionType)
+            {
+                case TransactionType.buy:
+                    SetTransactionInstructions(buyInstructions);
+                    break;
+
+                case TransactionType.sell:
+                    SetTransactionInstructions(sellInstructions);
+                    break;
+            }
+
         }
     }
 
