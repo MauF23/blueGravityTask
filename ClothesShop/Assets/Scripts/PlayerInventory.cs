@@ -7,16 +7,17 @@ using UnityEngine.Pool;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public int wallet;
+    //public int wallet;
     public CanvasGroup playerInventoryCanvas;
     public Transform playerInventoryContainer;
     private ObjectPool<GameObject> clothesButtonPool;
-    public List<Clothes> playerClothes;
+    //public List<Clothes> playerClothes;
+    public Inventory inventory;
     private Clothes equippedClothes;
     public List<ClothesInventoryButton> clothesInventoryButtonList;
     public GameObject clothesInventoryButtonPrefab;
     public SpriteRenderer pelvis, torso, hood;
-    public enum walletBallanceModifier {add, remove}
+    //public enum walletBallanceModifier {add, remove}
 
     [ReadOnly]
     public Shop currentShop;
@@ -76,37 +77,17 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddClothes(Clothes clothes)
     {
-        if (!playerClothes.Contains(clothes))
-        {
-            playerClothes.Add(clothes);
-        }
+        inventory.AddClothes(clothes);
     }
 
     public void RemoveClothes(Clothes clothes)
     {
-        if (playerClothes.Contains(clothes))
-        {
-            playerClothes.Remove(clothes);
-        }
+        inventory.RemoveClothes(clothes);
     }
 
-    public void ModifyWalletBalance(int value, walletBallanceModifier modifier)
+    public void ModifyWalletBalance(int value, Inventory.walletBallanceModifier modifier)
     {
-        switch (modifier)
-        {
-            case walletBallanceModifier.add:
-                wallet += value;
-                break;
-
-            case walletBallanceModifier.remove:
-                wallet -= value;
-                break;
-        }
-
-        if(wallet <= 0)
-        {
-            wallet = 0;
-        }
+        inventory.ModifyWalletBalance(value, modifier);
     }
 
     public void InitializeStore()
@@ -114,9 +95,9 @@ public class PlayerInventory : MonoBehaviour
         if (currentShop != null)
         {
             List<Clothes> sellableClothes = new List<Clothes>();
-            for(int i = 0; i < playerClothes.Count; i++)
+            for(int i = 0; i < inventory.clothes.Count; i++)
             {
-                sellableClothes.Add(playerClothes[i]);
+                sellableClothes.Add(inventory.clothes[i]);
             }
 
             sellableClothes.Remove(equippedClothes);
@@ -174,10 +155,10 @@ public class PlayerInventory : MonoBehaviour
     {
         for (int i = 0; i < clothesInventoryButtonList.Count; i++)
         {
-            if (i < playerClothes.Count)
+            if (i < inventory.clothes.Count)
             {
                 ClothesInventoryButton clothesButton = clothesInventoryButtonList[i];
-                clothesButton.SetButton(playerClothes[i]);
+                clothesButton.SetButton(inventory.clothes[i]);
                 clothesButton.gameObject.SetActive(true);
             }
             else
@@ -189,9 +170,9 @@ public class PlayerInventory : MonoBehaviour
 
     private void EquipStartingClothes()
     {
-        if(playerClothes.Count > 0)
+        if(inventory.clothes.Count > 0)
         {
-            ChangeClothes(playerClothes[0]);
+            ChangeClothes(inventory.clothes[0]);
         }
     }
 }

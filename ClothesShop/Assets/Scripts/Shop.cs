@@ -5,7 +5,8 @@ using Sirenix.OdinInspector;
 
 public class Shop : MonoBehaviour
 {
-    public List<Clothes> shopClothes;
+    //public List<Clothes> shopClothes;
+    public Inventory shopInventory;
 
     [ReadOnly]
     public Clothes selectedClothes;
@@ -29,15 +30,15 @@ public class Shop : MonoBehaviour
     {
         if (selectedClothes != null)
         {
-            if (playerInventory.wallet - selectedClothes.price < 0)
+            if (playerInventory.inventory.wallet - selectedClothes.price < 0)
             {
                 //can't buy clothes
             }
             else
             {
-                playerInventory.ModifyWalletBalance(selectedClothes.price, PlayerInventory.walletBallanceModifier.remove);
+                playerInventory.ModifyWalletBalance(selectedClothes.price, Inventory.walletBallanceModifier.remove);
                 playerInventory.AddClothes(selectedClothes);
-                shopClothes.Remove(selectedClothes);
+                shopInventory.RemoveClothes(selectedClothes);
                 SelectClothes(null);
             }
         }
@@ -47,16 +48,16 @@ public class Shop : MonoBehaviour
     {
         if (selectedClothes != null)
         {
-            playerInventory.ModifyWalletBalance(selectedClothes.price, PlayerInventory.walletBallanceModifier.add);
+            playerInventory.ModifyWalletBalance(selectedClothes.price, Inventory.walletBallanceModifier.add);
             playerInventory.RemoveClothes(selectedClothes);
-            shopClothes.Add(selectedClothes);
+            shopInventory.AddClothes(selectedClothes);
         }
 
     }
 
     public void InitializeStore()
     {
-        shopUI.SetClothesButton(shopClothes, this, ShopUI.TransactionType.buy);
+        shopUI.SetClothesButton(shopInventory.clothes, this, ShopUI.TransactionType.buy);
     }
 
     public void OpenShop()

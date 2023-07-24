@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float speed;
     public Rigidbody2D rigidbody2D;
     public Animator animator;
+    private float movementX, movementY;
     private Vector2 movement;
     [ReadOnly]
     public bool canMove;
@@ -30,6 +31,10 @@ public class Player : MonoBehaviour
         originalScale = transform.localScale;
     }
 
+    private void Update()
+    {
+        MovementInput();
+    }
     void FixedUpdate()
     {
         if (canMove)
@@ -38,21 +43,29 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void MovementInput()
+    {
+        movementX = Input.GetAxisRaw("Horizontal");
+        movementY = Input.GetAxisRaw("Vertical");
+    }
+
     private void Movement()
     {
-        movement.x = Input.GetAxisRaw("Horizontal") * speed;
-        movement.y = Input.GetAxisRaw("Vertical") * speed;
-        rigidbody2D.velocity = new Vector2(movement.x, movement.y);
+        movement = new Vector2(movementX, movementY);
+        movement.Normalize();
+        rigidbody2D.velocity = movement * speed;
+
         animator.SetFloat("speed", rigidbody2D.velocity.sqrMagnitude);
-        if(movement.x < 0)
+        if (movement.x < 0)
         {
             Flip(true);
         }
-        else if(movement.x > 0)
+        else if (movement.x > 0)
         {
             Flip(false);
         }
     }
+
 
     private void Flip(bool value)
     {

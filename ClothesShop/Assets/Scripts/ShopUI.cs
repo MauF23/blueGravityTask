@@ -172,7 +172,7 @@ public class ShopUI : MonoBehaviour
 
     private void UpdateBalanceText()
     {
-        walletText.text = ($"{balanceText} {playerInventory.wallet.ToString()}");
+        walletText.text = ($"{balanceText} {playerInventory.inventory.wallet.ToString()}");
     }
     private void PoolButton()
     {
